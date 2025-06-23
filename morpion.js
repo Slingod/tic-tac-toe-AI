@@ -205,29 +205,39 @@ class Morpion {
   };
                                                 // Le HandleUndo fait avec l'aide de GPT
   handleUndo = () => {
-  // S’assurer qu’il y a au moins un coup humain à annuler
-  if (this.history.length > 1) {
-    // Annuler le dernier état (qui est après le tour du joueur ET le tour de l'IA)
-    this.history.pop(); // supprime état après l'IA
-    this.history.pop(); // supprime état après le joueur
-
-    // Rétablir l'état avant le tour du joueur
+  if (this.history.length > 2) {
+    // On prend le dernier état (après l'IA) :
+    const lastIaState = this.history.pop();
+    this.future.unshift(lastIaState); // on met le coup IA dans le futur
+    // On prend le dernier état (après le joueur) :
+    const lastPlayerState = this.history.pop();
+    this.future.unshift(lastPlayerState); // on met le coup joueur dans le futur
+    // On revient au nouvel état "actuel"
     this.gridMap = JSON.parse(
       JSON.stringify(this.history[this.history.length - 1])
     );
-
     this.refreshGrid();
     this.saveGame();
   }
 };
-  handleRedo = () => {
-    if (this.future.length > 0) {
-      this.gridMap = this.future.shift();
-      this.history.push(JSON.parse(JSON.stringify(this.gridMap)));
-      this.refreshGrid();
-      this.saveGame();
-    }
-  };
+
+handleRedo = () => {
+  if (this.future.length >= 2) {
+    
+    const nextPlayerState = this.future.shift();
+    this.history.push(JSON.parse(JSON.stringify(nextPlayerState)));
+    
+    const nextIaState = this.future.shift();
+    this.history.push(JSON.parse(JSON.stringify(nextIaState)));
+
+    this.gridMap = JSON.parse(
+      JSON.stringify(this.history[this.history.length - 1])
+    );
+    this.refreshGrid();
+    this.saveGame();
+  }
+};
+
   refreshGrid = () => {
     this.gridMap.flat().forEach((c, index) => {
       const y = Math.floor(index / 3);
