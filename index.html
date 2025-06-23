@@ -1,34 +1,61 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>The Hacking Morpion</title>
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster">
-        <link rel="stylesheet" type="text/css" href="./style.css" />
-    </head>
-    <body>
-        <h1 class="title">The Hacking Morpion</h1>
-        <section class="game-grid">
-            <div class="cell" id="A1"></div>
-            <div class="cell" id="A2"></div>
-            <div class="cell" id="A3"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Hacking Morpion</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://fonts.googleapis.com/css?family=Lobster"
+    />
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+  </head>
+  <body>
+    <h1 class="title">The Hacking Morpion</h1>
 
-            <div class="cell" id="B1"></div>
-            <div class="cell" id="B2"></div>
-            <div class="cell" id="B3"></div>
+    <section class="game-grid">
+      <div class="cell" id="A1"></div>
+      <div class="cell" id="A2"></div>
+      <div class="cell" id="A3"></div>
 
-            <div class="cell" id="C1"></div>
-            <div class="cell" id="C2"></div>
-            <div class="cell" id="C3"></div>
-        </section>
-        <section class="actions">
-            <a class="replay-button" href="./index.html">Rejouer</a>
-        </section>
-        <div class="end-message" id="end-message"></div>
-        <script src="./morpion.js"></script>
-        <script>
-            const morpion = new Morpion();
-        </script>
-    </body>
+      <div class="cell" id="B1"></div>
+      <div class="cell" id="B2"></div>
+      <div class="cell" id="B3"></div>
+
+      <div class="cell" id="C1"></div>
+      <div class="cell" id="C2"></div>
+      <div class="cell" id="C3"></div>
+    </section>
+
+    <section class="actions">
+      <!-- Nouveau bouton Rejouer -->
+      <button id="restart-btn">Rejouer</button>
+
+      <button id="undo-btn">Undo</button>
+      <button id="redo-btn">Redo</button>
+
+      <label for="difficulty">Difficulté:</label>
+      <select id="difficulty">
+        <option value="easy">Débutant</option>
+        <option value="medium">Intermédiaire</option>
+        <option value="hard">Avancé</option>
+      </select>
+    </section>
+
+    <div class="end-message" id="end-message"></div>
+
+    <script src="./morpion.js"></script>
+    <script>
+      const morpion = new Morpion();
+
+      // Gestion du bouton "Rejouer" :
+      document.getElementById('restart-btn').addEventListener('click', () => {
+        const currentDifficulty = document.getElementById('difficulty').value;
+        localStorage.setItem('morpion-difficulty', currentDifficulty); // sauvegarde le niveau
+        localStorage.removeItem('morpion-save'); // supprime la sauvegarde de la partie
+        location.reload();
+      });
+    </script>
+  </body>
 </html>
