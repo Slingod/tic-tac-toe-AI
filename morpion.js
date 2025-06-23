@@ -203,7 +203,7 @@ class Morpion {
       return { score: bestScore, move: bestMove };
     }
   };
-
+                                                // Le HandleUndo fait avec l'aide de GPT
   handleUndo = () => {
   // S’assurer qu’il y a au moins un coup humain à annuler
   if (this.history.length > 1) {
